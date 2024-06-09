@@ -18,4 +18,52 @@ model User{
   Password String 
   Confirm String
   Email String 
+  submissions Submission[]
+}
+model Problem{
+  id String @id @default(uuid())
+  title String
+  description String
+  difficulty Difficulty
+  submissions Submission[]
+  problemCategories ProblemCategory[]
+}
+model Submission{
+  id String @id @default(uuid())
+  code String
+  language Language
+  status Status
+  user User @relation(fields:[userId],references:[id])
+  userId String
+  problem   Problem  @relation(fields: [problemId], references: [id])
+  problemId String
+  createdAt DateTime @default(now())
+}
+model Category{
+  id String @id @default(uuid())
+  name String @unique
+  problemCategories ProblemCategory[]
+}
+model ProblemCategory{
+  problemId String
+  categoryId String
+  problem Problem @relation(fields:[problemId],references:[id])
+  category Category @relation(fields:[categoryId],references:[id])
+  @@id([problemId,categoryId])
+}
+enum Difficulty{
+  EASY
+  MEDIUM
+  HARD
+}
+enum Language{
+  PYTHON
+  JAVASCRIPT
+  JAVA
+  C_PLUS_PLUS
+}
+enum Status{
+  PENDING
+  ACCEPTED
+  REJECTED
 }
