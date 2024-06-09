@@ -17,7 +17,7 @@ model User{
   Username String @unique
   Password String 
   Confirm String
-  Email String 
+  Email String  @unique
   submissions Submission[]
 }
 model Problem{
