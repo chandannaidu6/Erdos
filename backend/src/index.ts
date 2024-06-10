@@ -6,6 +6,7 @@ import {userRouter} from './routes/user';
 import { cors } from 'hono/cors';
 import problemRouter from './routes/problem';
 import categoryRouter from './routes/category';
+import { submissionRouter } from './routes/submission';
 
 const app = new Hono<{
   Bindings:{
@@ -17,6 +18,8 @@ app.use('/*',cors())
 app.route('/api/leetcode',userRouter);
 app.route('/api/leetcode/landing',problemRouter)
 app.route('/api/admin',categoryRouter)
+app.route('/api/leetcode/submission',submissionRouter)
+
 
 
 
