@@ -61,7 +61,7 @@ userRouter.post('/signin', async (c) => {
     setCookie(c,'jwt',jwtToken,{
       httpOnly: true,
       secure: true,
-      sameSite: 'Strict',
+      sameSite: 'Lax',
     })
     return c.json({message:"Signin Successful"})
 
