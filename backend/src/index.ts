@@ -15,7 +15,7 @@ const app = new Hono<{
   }
 }>()
 app.use('/*',cors())
-app.route('/api/leetcode',userRouter);
+app.route('/api/leetcode/user',userRouter);
 app.route('/api/leetcode/landing',problemRouter)
 app.route('/api/admin',categoryRouter)
 app.route('/api/leetcode/submission',submissionRouter)
