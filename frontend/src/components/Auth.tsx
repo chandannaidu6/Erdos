@@ -20,8 +20,8 @@ export const Auth = ({type}:{type:"signup"|"signin"}) => {
  const navigate = useNavigate();
  async function sendRequest(){
     try{
-        await axios.post(`${BACKEND_URL}/api/leetcode/user/signup`,postInputs)
-        navigate('/problems')
+        await axios.post(`${BACKEND_URL}/api/leetcode/user/${type==='signup'?'signup':'signin'}`,postInputs)
+        navigate('/landing')
     }
     catch(e){
         alert("Error while Signingup")
@@ -35,21 +35,21 @@ export const Auth = ({type}:{type:"signup"|"signin"}) => {
             <div className='px-10'>
             
             <div className='text-3xl font-extrabold'>
-            Create an Account
+            {type==='signup'?'Create an Account':'Login'}
             </div>
             <div className='text-slate-400'>
-                {type==="signin"?"Don't have an account?":"Already have an Account"}
+                {type==="signin"?"Don't have an account?":"Already have an Account?"}
                 <Link className= 'underline' to={type==='signin'?'/signup':'/signin'}>
                     {type==='signin'?'Sign up':'Sign in'}
                 </Link>
             </div>
-        <LabelledInput label='Username' placeholder='Chandan..' onChange={(e) => {
+        {type==='signup'?<LabelledInput label='Username' placeholder='Chandan..' onChange={(e) => {
             setpostInputs(c => ({
                 ...c,
                 Username:e.target.value
 
             }))
-        }} />
+        }} />:null}
         <LabelledInput type={'email'} label='Email' placeholder='abc@gmail.com' onChange={(e) => {
             setpostInputs(c => ({
                 ...c,
@@ -64,14 +64,14 @@ export const Auth = ({type}:{type:"signup"|"signin"}) => {
 
             }))
         }} />
-        <LabelledInput type={'password'} label='Confirm Password' placeholder='********' onChange={(e) => {
+        {type==='signup' ?<LabelledInput type={'password'} label='Confirm Password' placeholder='********' onChange={(e) => {
             setpostInputs(c => ({
                 ...c,
                 Confirm:e.target.value
 
             }))
-        }} />
-        <button onClick={sendRequest} type="button" className="mt-6 w-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Signup</button>
+        }} />:null}
+        <button onClick={sendRequest} type="button" className="mt-6 w-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">{type==='signup'?'Sign up':'Sign in'}</button>
 
     </div>
     </div>
