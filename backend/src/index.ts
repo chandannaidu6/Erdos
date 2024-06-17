@@ -7,14 +7,18 @@ import { cors } from 'hono/cors';
 import problemRouter from './routes/problem';
 import categoryRouter from './routes/category';
 import { submissionRouter } from './routes/submission';
+import { Context,Next } from 'hono';
 
 const app = new Hono<{
   Bindings:{
     DATABASE_URL:string,
     JWT_SECRET:string,
+    NODE_ENV: string,
+
   }
 }>()
 app.use('/*',cors())
+
 app.route('/api/leetcode/user',userRouter);
 app.route('/api/leetcode/landing',problemRouter)
 app.route('/api/admin',categoryRouter)

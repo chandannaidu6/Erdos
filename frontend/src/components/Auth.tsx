@@ -20,10 +20,13 @@ export const Auth = ({type}:{type:"signup"|"signin"}) => {
  const navigate = useNavigate();
  async function sendRequest(){
     try{
-        await axios.post(`${BACKEND_URL}/api/leetcode/user/${type==='signup'?'signup':'signin'}`,postInputs)
-        navigate('/landing')
-    }
+        const response = await axios.post(`${BACKEND_URL}/api/leetcode/user/${type==='signup'?'signup':'signin'}`,postInputs)
+        const jwt = response.data;
+        localStorage.setItem("token",JSON.stringify(jwt));
+            navigate('/landing');
+        }
     catch(e){
+        console.log(e)
         alert("Error while Signingup")
     }
 }

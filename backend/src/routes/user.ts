@@ -1,17 +1,33 @@
 import { Hono } from 'hono'
-import { setCookie } from 'hono/cookie'
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { sign } from 'hono/jwt'
+import { Context,Next } from 'hono'
 export const userRouter = new Hono<{
   Bindings:{
     DATABASE_URL:string,
-    JWT_SECRET:string
+    JWT_SECRET:string,
+    NODE_ENV:string
 
   }
 
 }>()
 
+/*userRouter.use('*',async  (c:Context, next:Next) => {
+  const isProduction = c.env.NODE_ENV === 'production';
+  const allowedOrigin = isProduction ? 'https://your-production-domain.com' : 'http://localhost:5173';
+
+  c.header('Access-Control-Allow-Origin', allowedOrigin);
+  c.header('Access-Control-Allow-Credentials', 'true');
+  c.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  c.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  if (c.req.method === 'OPTIONS') {
+    return c.json({message:"null"})
+  }
+
+  await  next();
+});*/
 userRouter.post('/signup', async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
@@ -26,13 +42,9 @@ userRouter.post('/signup', async (c) => {
         Email:body.Email
       }
     });
-    const jwtToken = await sign({id:user.id},c.env.JWT_SECRET)
-    setCookie(c,'jwt',jwtToken,{
-      httpOnly:true,
-      secure:true,
-      sameSite:'Strict'
-    });
-    return c.json({message:"Signup Successfull"})
+    const jwt = await sign({id:user.id},c.env.JWT_SECRET)
+
+    return c.json({jwt})
 
 
   }
@@ -49,7 +61,8 @@ userRouter.post('/signin', async (c) => {
     const body = await c.req.json();
     const user = await prisma.user.findUnique({
       where:{
-        Email:body.Email
+        Email:body.Email,
+        Password:body.Password
       }
     })
     if(!user){
@@ -57,13 +70,8 @@ userRouter.post('/signin', async (c) => {
       return c.json({error:"user not found"})
     }
 
-    const jwtToken = await sign({id:user.id},c.env.JWT_SECRET);
-    setCookie(c,'jwt',jwtToken,{
-      httpOnly: true,
-      secure: true,
-      sameSite: 'Lax',
-    })
-    return c.json({message:"Signin Successful"})
+    const jwt = await sign({id:user.id},c.env.JWT_SECRET);
+    return c.json({jwt})
 
 
 

@@ -1,13 +1,11 @@
 import { Hono } from 'hono';
 import { PrismaClient } from '@prisma/client/edge';
 import { withAccelerate } from '@prisma/extension-accelerate';
-import verifyCookie from '../middleware/Authentication';
 export const submissionRouter = new Hono<{
     Bindings:{
         DATABASE_URL:string;
     }
 }>();
-submissionRouter.use('/*',verifyCookie);
 submissionRouter.post('/create',async (c) =>{
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,

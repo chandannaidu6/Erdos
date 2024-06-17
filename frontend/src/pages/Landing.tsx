@@ -3,42 +3,13 @@ import { Card } from "../components/Card";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { useState, useEffect } from 'react';
+import { Problem } from "../hooks";
+import { displayProblems } from "../hooks";
 
-interface Problem {
-  id: string;
-  title: string;
-  description: string;
-  difficulty: string;
-  problemCategories: {
-    problemId: string;
-    categoryId: string;
-    category: {
-      id: string;
-      name: string;
-    };
-  }[];
-}
+
 
 export const Landing = () => {
-  const [problems, setProblems] = useState<Problem[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  async function sendRequest() {
-    try {
-      const response = await axios.get(`${BACKEND_URL}/api/leetcode/landing/list`,{
-        withCredentials:true
-      });
-      setProblems(response.data);
-      setLoading(false);
-    } catch (e) {
-      alert("Error while fetching problems");
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    sendRequest();
-  }, []);
+ const {loading,problems} = displayProblems();
 
   return (
     <div>
@@ -68,7 +39,7 @@ export const Landing = () => {
               {loading ? (
                 <div>Loading...</div>
               ) : (
-                problems.map((problem, index) => (
+                problems.map((problem) => (
                   <div key={problem.id}>
                     <div className='font-bold'>{problem.title}</div>
                     <div className='text-sm'>{problem.description}</div>
