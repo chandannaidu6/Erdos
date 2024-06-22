@@ -10,10 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.6.0",
     "@types/js-cookie": "^3.0.6",
     "axios": "^1.7.2",
+    "codemirror": "^5.65.16",
     "js-cookie": "^3.0.5",
     "react": "^18.2.0",
+    "react-codemirror2": "^8.0.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.1"
   },
