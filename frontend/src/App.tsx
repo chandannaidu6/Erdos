@@ -4,6 +4,7 @@ import { Signin } from "./pages/Signin";
 import { Landing } from "./pages/Landing";
 import { About } from "./pages/About";
 import {AllProblems} from './pages/allProblems'
+import { ProblemDetailPage } from "./pages/ProblemDetailPage";
 import React from "react";
 
 function App(){
@@ -16,6 +17,7 @@ function App(){
           <Route path='/landing' element={<Landing />} />
           <Route path='/about' element={<About />} />
           <Route path='/problems' element={<AllProblems />} />
+          <Route path="/problems/:id" element={<ProblemDetailPage />} />
 
         </Routes>
       </BrowserRouter>

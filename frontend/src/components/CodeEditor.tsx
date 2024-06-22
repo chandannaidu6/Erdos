@@ -10,11 +10,21 @@ interface CodeEditor{
 export const CodeEditor:React.FC<CodeEditor> = ({code,onChange,language,onLanguageChange}) =>{
     return <div>
         <select value={language} onChange={(e)=> onLanguageChange(e.target.value)}>
-        <option value="javascript">JavaScript</option>
-        <option value="python">Python</option>
-        <option value="C++">C++</option>
-
-
+            <option value="JAVASCRIPT">JavaScript</option>
+            <option value="PYTHON">Python</option>
+            <option value="C_PLUS_PLUS">C++</option>
         </select>
+        <Editor 
+        height="500px"
+        language={language}
+        value={code}
+        theme="vs-dark"
+        onChange = {(value) => onChange(value || '')}
+        options={{
+            automaticLayout:true,
+            scrollBeyondLastLine:false,
+            minimap:{enabled:false},
+        }}
+        />
     </div>
 }

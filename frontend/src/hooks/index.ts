@@ -52,3 +52,43 @@ export const displayProblems = () => {
         problems
     }
 }
+export interface Submission{
+    userId:String;
+    problemId:String;
+    code:String;
+    language:string;
+    status:string
+}
+export const SubmitCode = async ({userId,problemId,code,language,status}:Submission) => {
+    try{
+        const storedToken = localStorage.getItem('token');
+        
+        const tokenObject = storedToken ? JSON.parse(storedToken) : null;
+        const jwtToken = tokenObject ? tokenObject.jwt : null;
+        console.log(storedToken);
+        const response = await  axios.post(`${BACKEND_URL}/api/leetcode/submission/create`,{
+            userId,
+            problemId,
+            status,
+            code,
+            language
+        } ,{
+            headers:{
+                Authorization:jwtToken
+            },
+
+
+    })
+    if(!response.data.success){
+        throw new Error('Submission Failed')
+    }
+    return { success: true, data: response.data }; // Return success and data upon successful submission
+
+    }   
+    catch(error:any){
+        console.error('Error submitting code:', error);
+        return { success: false, error: error.message };
+
+    }
+
+}
