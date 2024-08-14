@@ -6,6 +6,7 @@ import { About } from "./pages/About";
 import {AllProblems} from './pages/allProblems'
 import { ProblemDetailPage } from "./pages/ProblemDetailPage";
 import React from "react";
+import { Editor } from "./pages/Editor";
 
 function App(){
   return (
@@ -18,6 +19,7 @@ function App(){
           <Route path='/about' element={<About />} />
           <Route path='/problems' element={<AllProblems />} />
           <Route path="/problems/:id" element={<ProblemDetailPage />} />
+          <Route path='/editor' element = {<Editor />} />
 
         </Routes>
       </BrowserRouter>
