@@ -1,15 +1,13 @@
 import { Appbar } from "../components/Appbar";
 import { Card } from "../components/Card";
-import axios from "axios";
-import { BACKEND_URL } from "../config";
-import { useState, useEffect } from 'react';
-import { Problem } from "../hooks";
 import { displayProblems } from "../hooks";
-
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 export const Landing = () => {
  const {loading,problems} = displayProblems();
+ const navigate = useNavigate();
 
   return (
     <div>
@@ -41,7 +39,7 @@ export const Landing = () => {
               ) : (
                 problems.map((problem) => (
                   <div key={problem.id}>
-                    <div className='font-bold'>{problem.title}</div>
+                    <div className='font-bold cursor-pointer' onClick={() => navigate('/editor',{state:{problem}})}>{problem.title}</div>
                     <div className='text-xs text-gray-500'>{problem.difficulty}</div>
                     <div className='text-xs text-gray-500 pb-4 border-b-2'>
                       Categories: {problem.problemCategories.map(pc => pc.category.name).join(', ')}

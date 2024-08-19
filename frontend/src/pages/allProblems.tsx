@@ -1,7 +1,6 @@
 import { displayProblems} from '../hooks'
 import { Appbar } from "../components/Appbar";
 import { Card } from "../components/Card";
-import React from 'react'
 export const AllProblems = () => {
     const {loading,problems} = displayProblems();
    
