@@ -1,16 +1,25 @@
-import { Box } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 import { CodeEditor } from "../components/CodeEditor";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
+import { CODE_SNIPPETS } from "../constants";
+import { Output } from "../components/Output";
+type Language = keyof typeof CODE_SNIPPETS
 export const Editor = () => {
     const location = useLocation();
     const problem = location.state?.problem;
-    const [code,setCode] = useState<string>("")
-    const [language,setLanguage] = useState<string>("JAVASCRIPT")
+    const [language,setLanguage] = useState<Language>("javascript")
+    const [code,setCode] = useState<string>(CODE_SNIPPETS[language])
+
+    useEffect(() => {
+        setCode(CODE_SNIPPETS[language])
+    },[language])
 
     return (<div>
         <Box minH="100vh" bg="#0f0a19" color='gray'>
-            {problem && (
+            <HStack spacing={4}>
+                <Box w='50%'>
+                {problem && (
                 <div>
                     <h1 className='font-bold text-2xl'>{problem.title}</h1>
                     <p className='text-xs text-gray-500 pb-2'>{problem.difficulty}</p>
@@ -20,15 +29,20 @@ export const Editor = () => {
                         .map((pc:any) => pc.category.name)
                         .join(", ")}
                     </p>
-                    <p className='text-gray-500 text-lg'>{problem.description}</p>
+                    <p className='text-gray-500 text-lg pb-2'>{problem.description}</p>
                 </div>
             )}
             <CodeEditor 
             code={code}
             language={language}
             onChange={(code) => setCode(code)}
-            onLanguageChange={(language) => setLanguage(language)}
+            onLanguageChange={(newLanguage) => setLanguage(newLanguage as Language)}
             />
+
+                </Box>
+            <Output code={code} language={language}/>
+            </HStack>
+
 
             
 
